@@ -17,22 +17,24 @@ public class FileStore {
     @Value("${file.dir}")
     private String fileDir;
 
-    public String getFilePath(String filename) {
+    public String getFullPath(String filename) {
         return fileDir + filename;
     }
 
+    // 여러개 저장
     public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
         ArrayList<UploadFile> storeFileResult = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
             if(!multipartFile.isEmpty()) {
-                storeFileResult.add(storeFile(multipartFile));
+                storeFileResult.add(this.storeFile(multipartFile));
             }
         }
 
         return storeFileResult;
     }
 
+    // 1개 저장
     public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
         if(multipartFile.isEmpty()) {
             return null;
@@ -40,7 +42,7 @@ public class FileStore {
 
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = this.createStoreFileName(originalFilename);
-        multipartFile.transferTo(new File(this.getFilePath(storeFileName)));
+        multipartFile.transferTo(new File(this.getFullPath(storeFileName)));
         return new UploadFile(originalFilename, storeFileName);
     }
 
