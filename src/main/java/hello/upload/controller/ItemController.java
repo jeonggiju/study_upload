@@ -82,8 +82,6 @@ public class ItemController {
         String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition).body(resource);
-
-
     }
 
 }
